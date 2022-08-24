@@ -8,7 +8,7 @@ git clone ...
 
 #### 使用说明
 
-go run main.go --help
+`go run main.go --help`
 
 ```
 -a string

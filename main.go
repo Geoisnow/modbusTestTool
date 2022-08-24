@@ -27,7 +27,7 @@ type Slave struct {
 var slave Slave
 
 func init() {
-	flag.StringVar(&slave.Address, "a", "/dev/ttyS1", "Serial address")
+	flag.StringVar(&slave.Address, "a", "/dev/ttyS0", "Serial address")
 	flag.IntVar(&slave.SlaveId, "i", 1, "Slave id")
 	flag.IntVar(&slave.BaudRate, "b", 9600, "BaudRate")
 	flag.IntVar(&slave.DataBits, "d", 8, "DataBits ")
@@ -57,7 +57,6 @@ func main() {
 	if err != nil {
 		log.Println("ReadHoldingRegisters err:", err)
 		fmt.Printf("RegisterAddr:%d\tQuantity:%d\n", slave.RegisterAddr, slave.Quantity)
-		fmt.Println("Please try again if the err is serial timeout")
 		return
 	}
 	fmt.Println("Read success!")
@@ -72,7 +71,7 @@ func NewRtuHandler() *modbus.RTUClientHandler {
 	handler.Parity = slave.Parity
 	handler.DataBits = slave.DataBits
 	handler.StopBits = slave.StopBits
-	handler.Timeout = time.Duration(slave.Timeout) * time.Microsecond
+	handler.Timeout = time.Duration(slave.Timeout) * time.Millisecond
 	handler.IdleTimeout = time.Duration(slave.IdleTimeout) * time.Second
 	return handler
 }
