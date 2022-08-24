@@ -3,9 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/goburrow/modbus"
 	"log"
+	"sync"
 	"time"
+
+	"github.com/goburrow/modbus"
 )
 
 type Slave struct {
@@ -19,13 +21,14 @@ type Slave struct {
 	IdleTimeout  int
 	RegisterAddr int
 	Quantity     int
+	Mutex        *sync.RWMutex
 }
 
 var slave Slave
 
 func init() {
-	flag.StringVar(&slave.Address, "a", "/dev/ttyS1", "The Address of Slave")
-	flag.IntVar(&slave.SlaveId, "i", 1, "slave id")
+	flag.StringVar(&slave.Address, "a", "/dev/ttyS1", "Serial address")
+	flag.IntVar(&slave.SlaveId, "i", 1, "Slave id")
 	flag.IntVar(&slave.BaudRate, "b", 9600, "BaudRate")
 	flag.IntVar(&slave.DataBits, "d", 8, "DataBits ")
 	flag.IntVar(&slave.StopBits, "s", 1, "StopBits")
@@ -33,7 +36,7 @@ func init() {
 	flag.IntVar(&slave.Timeout, "t", 100, "Timeout")
 	flag.IntVar(&slave.IdleTimeout, "it", 2, "IdleTimeout")
 	//读取寄存器相关
-	flag.IntVar(&slave.RegisterAddr, "r", 0, "Register addr")
+	flag.IntVar(&slave.RegisterAddr, "r", 0, "Register addr (default 0)")
 	flag.IntVar(&slave.Quantity, "q", 1, "Quantity")
 }
 
