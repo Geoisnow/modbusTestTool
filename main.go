@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"sync"
 	"time"
 
 	"github.com/goburrow/modbus"
@@ -21,7 +20,6 @@ type Slave struct {
 	IdleTimeout  int
 	RegisterAddr int
 	Quantity     int
-	Mutex        *sync.RWMutex
 }
 
 var slave Slave
